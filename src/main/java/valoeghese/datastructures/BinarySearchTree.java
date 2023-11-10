@@ -98,9 +98,15 @@ public abstract class BinarySearchTree<T extends Comparable<T>, N extends Binary
 
 		if (isLeft) {
 			oldParent.leftChild = child.rightChild;
+			if (oldParent.leftChild != null)
+				oldParent.leftChild.parent = oldParent;
+
 			child.rightChild = oldParent;
 		} else {
 			oldParent.rightChild = child.leftChild;
+			if (oldParent.rightChild != null)
+				oldParent.rightChild.parent = oldParent;
+
 			child.leftChild = oldParent;
 		}
 
@@ -207,7 +213,7 @@ public abstract class BinarySearchTree<T extends Comparable<T>, N extends Binary
 		 * @param child the child of this node to replace.
 		 * @param newChild the node to replace the given child with.
 		 */
-		 protected void replace(N child, N newChild) {
+		protected void replace(N child, N newChild) {
 			if (this.leftChild == child) {
 				this.leftChild = newChild;
 			} else if (this.rightChild == child) {
@@ -226,8 +232,8 @@ public abstract class BinarySearchTree<T extends Comparable<T>, N extends Binary
 
 			N grandParent = this.parent.parent;
 
-			boolean leftLine = this.parent.leftChild == elem && grandParent.leftChild == this.parent;
-			boolean rightLine = this.parent.rightChild == elem && grandParent.rightChild == this.parent;
+			boolean leftLine = this.parent.leftChild == this && grandParent.leftChild == this.parent;
+			boolean rightLine = this.parent.rightChild == this && grandParent.rightChild == this.parent;
 			return rightLine || leftLine;
 		}
 
